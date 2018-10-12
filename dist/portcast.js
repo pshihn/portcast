@@ -1,7 +1,6 @@
 export class PortCast {
     constructor() {
         this.channelMap = new Map();
-        this.messageListener = this.handleMessage.bind(this);
         this.rootOutlets = new Set();
     }
     addChannel(name, channel, outlets) {
@@ -10,10 +9,11 @@ export class PortCast {
             throw new Error('Channel with the key "' + name + '" already defined.');
         const node = {
             channel,
-            outlets: new Set(outlets || [])
+            outlets: new Set(outlets || []),
+            handler: this.getHandler(name)
         };
         this.channelMap.set(name, node);
-        channel.port1.addEventListener('message', this.messageListener);
+        channel.port1.addEventListener('message', node.handler);
         channel.port1.start();
         return channel;
     }
@@ -21,7 +21,7 @@ export class PortCast {
         if (this.channelMap.has(name)) {
             const node = this.channelMap.get(name);
             this.channelMap.delete(name);
-            node.channel.port1.removeEventListener('message', this.messageListener);
+            node.channel.port1.removeEventListener('message', node.handler);
             if (closePort) {
                 node.channel.port1.close();
             }
@@ -71,7 +71,26 @@ export class PortCast {
         }
         return false;
     }
-    handleMessage(event) {
-        console.log('message event', event);
+    postRootMessage(data, transfer) {
+        this.relayMessage(this.rootOutlets, data, transfer);
+    }
+    getHandler(name) {
+        return (event) => {
+            const node = this.channelMap.get(name);
+            if (node) {
+                const transfer = (event.ports && event.ports.length) ? Array.from(event.ports) : [];
+                this.relayMessage(node.outlets, transfer);
+            }
+        };
+    }
+    relayMessage(outlets, data, transfer) {
+        if (outlets && outlets.size) {
+            outlets.forEach((o) => {
+                const onode = this.channelMap.get(o);
+                if (onode) {
+                    onode.channel.port1.postMessage(data, transfer);
+                }
+            });
+        }
     }
 }

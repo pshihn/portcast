@@ -78,9 +78,28 @@ export class PortCast {
     return false;
   }
 
+  postRootMessage(data: any, transfer?: Transferable[]): void {
+    this.relayMessage(this.rootOutlets, data, transfer);
+  }
+
   private getHandler(name: string): (event: MessageEvent) => void {
     return (event: MessageEvent) => {
-      console.log('message event for ' + name, event);
+      const node = this.channelMap.get(name);
+      if (node) {
+        const transfer = (event.ports && event.ports.length) ? Array.from(event.ports) : [];
+        this.relayMessage(node.outlets, transfer);
+      }
     };
+  }
+
+  private relayMessage(outlets: Set<string>, data: any, transfer?: Transferable[]): void {
+    if (outlets && outlets.size) {
+      outlets.forEach((o) => {
+        const onode = this.channelMap.get(o);
+        if (onode) {
+          onode.channel.port1.postMessage(data, transfer);
+        }
+      });
+    }
   }
 }
