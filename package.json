@@ -1,0 +1,35 @@
+{
+  "name": "portcast",
+  "version": "0.1.0",
+  "description": "Multicasting for Channel Messaging API",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint --project ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pshihn/portcast.git"
+  },
+  "keywords": [
+    "multicast",
+    "MessagePort",
+    "MessageChannel",
+    "worker",
+    "webworker",
+    "thread",
+    "iframe",
+    "ipc"
+  ],
+  "author": "Preet Shihn <preetshihn@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pshihn/portcast/issues"
+  },
+  "homepage": "https://github.com/pshihn/portcast#readme",
+  "devDependencies": {
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.3"
+  }
+}
