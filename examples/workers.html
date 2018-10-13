@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>Portcast Worker Example</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      font-size: 16px;
+    }
+    header {
+      background: #f5f5f5;
+      padding: 16px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    h3, h4 {
+      margin: 0;
+    }
+    section {
+      padding: 16px;
+    }
+    div {
+      margin-top: 10px;
+    }
+    input {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <article>
+    <header>
+      <h3>Portcast Worker Multicast Example</h3>
+      <p>
+        In this example, there are three web workers. The workers compute square, cube, and the fourth power of a
+        number.
+        As you change the slider, the number is multicast to all three workers.
+      </p>
+    </header>
+    <main>
+      <section>
+        <h4>Root Page</h4>
+        <div id="invalue">0</div>
+        <div>
+          <input type="range" min="0" max="100" value="0">
+        </div>
+        <div id="d1"></div>
+        <div id="d2"></div>
+        <div id="d3"></div>
+      </section>
+    </main>
+  </article>
+
+  <script type="module">
+    import { PortCast } from '../dist/portcast.js';
+
+    const input = document.querySelector('input');
+    const inValue = document.getElementById('invalue');
+    const d1 = document.getElementById('d1');
+    const d2 = document.getElementById('d2');
+    const d3 = document.getElementById('d3');
+
+    const portcast = new PortCast();
+
+    // create workers
+    for (let i = 0; i < 3; i++) {
+      const id = `worker${i + 1}`;
+      const blob = new Blob([document.querySelector(`#${id}`).textContent]);
+      const worker = new Worker(window.URL.createObjectURL(blob));
+      const channel = portcast.addChannel(id);
+      channel.port1.addEventListener('message', (e) => document.getElementById(`d${i + 1}`).textContent = e.data);
+      worker.postMessage('', [channel.port2]);
+      portcast.getOutlets('').add(id);
+    }
+
+    // Listen to range change
+    input.addEventListener('input', () => {
+      inValue.textContent = input.value
+      portcast.postRootMessage(input.value);
+    });
+  </script>
+
+  <script id="worker1" type="javascript/worker">
+    self.onmessage = function(e) {
+      const p = e.ports && e.ports[0];
+      if (p) {
+        p.onmessage = (event) => {
+          const n = +event.data;
+          p.postMessage(`Square of ${n} is ${n*n}.`);
+        };
+      }
+    };
+  </script>
+  <script id="worker2" type="javascript/worker">
+    self.onmessage = function(e) {
+      const p = e.ports && e.ports[0];
+      if (p) {
+        p.onmessage = (event) => {
+          const n = +event.data;
+          p.postMessage(`Cube of ${n} is ${n*n*n}.`);
+        };
+      }
+    };
+  </script>
+  <script id="worker3" type="javascript/worker">
+    self.onmessage = function(e) {
+      const p = e.ports && e.ports[0];
+      if (p) {
+        p.onmessage = (event) => {
+          const n = +event.data;
+          p.postMessage(`4th power of ${n} is ${n*n*n*n}.`);
+        };
+      }
+    };
+  </script>
+</body>
+
+</html>
