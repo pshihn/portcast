@@ -3,7 +3,7 @@ export class PortCast {
         this.channelMap = new Map();
         this.rootOutlets = new Set();
     }
-    addChannel(name, channel, outlets) {
+    addChannel(name, outlets, channel) {
         channel = channel || new MessageChannel();
         if ((!name) || this.channelMap.has(name)) {
             throw new Error('Channel with the key "' + name + '" already defined.');
@@ -44,7 +44,7 @@ export class PortCast {
             const node = this.channelMap.get(name);
             if (node) {
                 const transfer = (event.ports && event.ports.length) ? Array.from(event.ports) : [];
-                this.relayMessage(node.outlets, transfer);
+                this.relayMessage(node.outlets, event.data, transfer);
             }
         };
     }

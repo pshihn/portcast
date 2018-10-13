@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>Portcast iFrame Test - Frame page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      font-size: 16px;
+      padding: 8px;
+    }
+
+    h4 {
+      margin: 0;
+    }
+
+    input {
+      font-size: 14px;
+      padding: 5px;
+    }
+
+    button {
+      font-size: 14px;
+      font-family: inherit;
+      padding: 10px;
+      border: 1px solid;
+      margin-left: 10px;
+      background: darkblue;
+      cursor: pointer;
+      color: white;
+      border-radius: 3px;
+    }
+    
+    #received {
+      margin-top: 10px;
+      font-size: 14px;
+      color: brown;
+    }
+  </style>
+</head>
+
+<body>
+  <h4></h4>
+  <div style="margin-top: 10px;">
+    <input type="text" placeholder="Message to send">
+    <button>SEND</button>
+  </div>
+  <div id="received"></div>
+
+  <script>
+    const title = document.querySelector('h4');
+    title.textContent = 'iFrame ' + window.location.hash.substring(1);
+
+    const input = document.querySelector('input');
+    const received = document.getElementById('received');
+    let port = null;
+
+    window.addEventListener('message', (e) => {
+      const p = e.ports && e.ports[0];
+      if (p) {
+        port = p;
+        port.onmessage = (e) => {
+          received.textContent = `Received: '${e.data}'`;
+        };
+      }
+    });
+
+    document.querySelector('button').addEventListener('click', () => {
+      const text = input.value;
+      if (port) {
+        port.postMessage(text);
+      }
+    });
+  </script>
+</body>
+
+</html>
