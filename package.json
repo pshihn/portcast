@@ -2,7 +2,9 @@
   "name": "portcast",
   "version": "0.1.0",
   "description": "Multicasting for Channel Messaging API",
-  "main": "index.js",
+  "main": "dist/portcast.js",
+  "module": "dist/portcast.js",
+  "types": "dist/portcast.d.ts",
   "scripts": {
     "build": "tsc",
     "lint": "tslint --project ./",
