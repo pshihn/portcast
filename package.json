@@ -20,7 +20,7 @@
     "MessageChannel",
     "worker",
     "webworker",
-    "thread",
+    "web worker",
     "iframe",
     "ipc",
     "Channel Messaging API",
