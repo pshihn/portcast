@@ -8,7 +8,7 @@ Normally, a [MessageChannel](https://developer.mozilla.org/en-US/docs/Web/API/Me
 
 You create a channel with a specified name using PortCast, and provide the names of all the channels its messages should be multicast to. 
 
-In the following example, all messages from `channelA` will be broadcasted to `ChannelB`. All messages from `channelC` will be broadcasted to Channels A, B, D.
+In the following example, all messages from `channelA` will be broadcasted to `channelB`. All messages from `channelC` will be broadcasted to Channels A, B, D.
 
 ```javascript
 import { PortCast } from 'portcast';
@@ -20,7 +20,7 @@ const channelC = portcast.addChannel('C', ['A', 'B', 'D']);
 const channelD = portcast.addChannel('D', ['A']);
 ```
 
-_Note: PortCast only deals with multicasting the messages on the channel. You have to do yourn own work of passing the channel port to the Worker or the iFrame. See [Using channel messaging](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API/Using_channel_messaging) on MDN to get a primer._
+_Note: PortCast only deals with multicasting the messages on the channel. You have to do your own work of passing the channel port to the Worker or the iFrame. See [Using channel messaging](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API/Using_channel_messaging) on MDN to get a primer._
 
 ## Examples
 
@@ -30,7 +30,7 @@ Here are a couple of live examples to see PortCast in action:
 
 [PortCast with Web Workers]()
 
-Source code for these pages is available in the [examples folder](https://github.com/pshihn/portcast/tree/master/examples)
+Source code for these pages is available in the [examples folder](https://github.com/pshihn/portcast/tree/master/examples).
 
 ## Install
 
@@ -40,8 +40,6 @@ or from npm:
 ```
 npm install --save portcast
 ```
-
-_PortCast is distributed only as an ES6 module at the moment, but you can easily transpile it._
 
 ## License
 [MIT License](https://github.com/pshihn/portcast/blob/master/LICENSE) (c) [Preet Shihn](https://twitter.com/preetster)
