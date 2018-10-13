@@ -5,8 +5,9 @@ export class PortCast {
     }
     addChannel(name, channel, outlets) {
         channel = channel || new MessageChannel();
-        if ((!name) || this.channelMap.has(name))
+        if ((!name) || this.channelMap.has(name)) {
             throw new Error('Channel with the key "' + name + '" already defined.');
+        }
         const node = {
             channel,
             outlets: new Set(outlets || []),
@@ -29,47 +30,11 @@ export class PortCast {
         }
         return false;
     }
-    addOutlet(name, ...outlets) {
+    getOutlets(name) {
         if (!name) {
-            outlets.forEach((o) => this.rootOutlets.add(o));
-            return true;
+            return this.rootOutlets;
         }
-        if (this.channelMap.has(name) && outlets && outlets.length) {
-            const node = this.channelMap.get(name);
-            outlets.forEach((o) => node.outlets.add(o));
-            return true;
-        }
-        return false;
-    }
-    removeOutlets(name, ...outlets) {
-        let set = null;
-        if (!name) {
-            set = this.rootOutlets;
-        }
-        else if (this.channelMap.has(name)) {
-            set = this.channelMap.get(name).outlets;
-        }
-        let ret = false;
-        if (set && outlets && outlets.length) {
-            outlets.forEach((o) => {
-                ret = set.delete(o) || ret;
-            });
-        }
-        return ret;
-    }
-    clearOutlets(name) {
-        let set = null;
-        if (!name) {
-            set = this.rootOutlets;
-        }
-        else if (this.channelMap.has(name)) {
-            set = this.channelMap.get(name).outlets;
-        }
-        if (set && set.size) {
-            set.clear();
-            return true;
-        }
-        return false;
+        return this.channelMap.has(name) ? this.channelMap.get(name).outlets : undefined;
     }
     postRootMessage(data, transfer) {
         this.relayMessage(this.rootOutlets, data, transfer);
