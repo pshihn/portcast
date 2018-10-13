@@ -22,7 +22,9 @@
     "webworker",
     "thread",
     "iframe",
-    "ipc"
+    "ipc",
+    "Channel Messaging API",
+    "Channel Messaging"
   ],
   "author": "Preet Shihn <preetshihn@gmail.com>",
   "license": "MIT",
