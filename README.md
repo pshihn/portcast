@@ -1,8 +1,10 @@
 # PortCast
 
-A small library (_480 bytes gzipped_) that allows multicasting with [Channel Messaging API](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API).
+A small library that allows multicasting with [Channel Messaging API](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API).
 
 Normally, a [MessageChannel](https://developer.mozilla.org/en-US/docs/Web/API/MessageChannel) connects two windows or two workers to each other. Sometimes, one may want to **multicast** a mesage to a number of workers/iframes. This is where _**PortCast**_ comes in.
+
+(_480 bytes gzipped_)
 
 ## Usage
 
