@@ -1,6 +1,6 @@
 {
   "name": "portcast",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Multicasting for Channel Messaging API",
   "main": "dist/portcast.js",
   "module": "dist/portcast.js",
@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/pshihn/portcast#readme",
   "devDependencies": {
-    "tslint": "^5.14.0",
-    "typescript": "^3.3.3333"
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
   }
 }

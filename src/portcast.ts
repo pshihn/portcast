@@ -63,7 +63,11 @@ export class PortCast {
       outlets.forEach((o) => {
         const onode = this.channelMap.get(o);
         if (onode) {
-          onode.channel.port1.postMessage(data, transfer);
+          if (transfer) {
+            onode.channel.port1.postMessage(data, transfer);
+          } else {
+            onode.channel.port1.postMessage(data);
+          }
         }
       });
     }
