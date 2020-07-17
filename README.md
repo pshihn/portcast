@@ -10,7 +10,7 @@ Normally, a [MessageChannel](https://developer.mozilla.org/en-US/docs/Web/API/Me
 
 You create a channel with a specified name using PortCast, and provide the names of all the channels its messages should be multicast to. 
 
-In the following example, all messages from `channelA` will be broadcasted to `channelB`. All messages from `channelC` will be broadcasted to Channels A, B, D.
+**In the following example, all messages from `channelA` will be broadcasted to `channelB`. All messages from `channelC` will be broadcasted to Channels A, B, D.**
 
 ```javascript
 import { PortCast } from 'portcast';
